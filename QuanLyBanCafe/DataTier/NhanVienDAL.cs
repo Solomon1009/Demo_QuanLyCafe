@@ -108,5 +108,16 @@ namespace QuanLyBanCafe.DataTier
             }
             return false;
         }
+
+        internal IEnumerable<NhanVienViewModel> TimKiemTuDb(string timKiem)
+        {
+            return quanLyCafeModel.NhanViens
+                .Where(x => x.Ten.ToLower().Contains(timKiem))
+                .Select(x => new NhanVienViewModel() { 
+                    Ma = x.MaNhanVien,
+                    Ten = x.Ten,
+                    TenDangNhap = x.TenDangNhap
+                }).ToList();
+        }
     }
 }

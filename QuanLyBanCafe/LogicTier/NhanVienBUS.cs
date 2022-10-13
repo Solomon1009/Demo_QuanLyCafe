@@ -39,5 +39,10 @@ namespace QuanLyBanCafe.LogicTier
         {
             return nhanVienDAL.KiemTraDangNhap(tenDangNhap, matKhau, out nv);
         }
+
+        internal IEnumerable<NhanVienViewModel> TimKiemTuDb(string timKiem)
+        {
+            return nhanVienDAL.TimKiemTuDb(timKiem);
+        }
     }
 }

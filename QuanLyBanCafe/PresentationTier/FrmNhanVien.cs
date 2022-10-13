@@ -1,5 +1,6 @@
 ﻿using QuanLyBanCafe.DataTier.Models;
 using QuanLyBanCafe.LogicTier;
+using QuanLyBanCafe.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,9 @@ namespace QuanLyBanCafe.PresentationTier
     public partial class FrmNhanVien : Form
     {
         private readonly NhanVienBUS nhanVienBUS;
+
+        private IEnumerable<NhanVienViewModel> danhSachNhanVien;
+
         private int maNhanVien = -1;
         public FrmNhanVien()
         {
@@ -31,7 +35,8 @@ namespace QuanLyBanCafe.PresentationTier
 
         private void LoadDanhSachNhanVien()
         {
-            dgvDanhSach.DataSource = nhanVienBUS.GetNhanViens();
+            danhSachNhanVien = nhanVienBUS.GetNhanViens();
+            dgvDanhSach.DataSource = danhSachNhanVien;
         }
 
         private void btnLuu_Click(object sender, EventArgs e)
@@ -106,6 +111,18 @@ namespace QuanLyBanCafe.PresentationTier
             {
                 btnXoa.PerformClick();
             }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string timKiem = txtSearch.Text.ToLower();
+            //dgvDanhSach.DataSource = TimKiemTuDanhSach(timKiem);
+            dgvDanhSach.DataSource = nhanVienBUS.TimKiemTuDb(timKiem);
+        }
+
+        private List<NhanVienViewModel> TimKiemTuDanhSach(string timKiem)
+        {
+            return new List<NhanVienViewModel>(danhSachNhanVien.Where(x => x.Ten.ToLower().Contains(timKiem)));
         }
     }
 }
